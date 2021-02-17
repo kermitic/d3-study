@@ -4,44 +4,56 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>D3</title>
-    <style></style>
+    <style>
+      svg {
+        position: relative;
+      }
+      text {
+        text-anchor: middle;
+        font-size: 10px;
+      }
+      circle {
+        fill: #78b4f0;
+        stroke: navy;
+        stroke-width: 1px;
+      }
+      .overallG.active circle {
+        fill: crimson;
+      }
+      #modal {
+        position: fixed;
+        left: 150px;
+        top: 20px;
+        z-index: 1;
+        background: white;
+        border: 1px black solid;
+        box-shadow: 10px 10px 5px #888888;
+      }
+      tr {
+        border: 1px gray solid;
+      }
+      td {
+        font-size: 10px;
+      }
+      td.data {
+        font-weight: 900;
+        min-width: 60px;
+      }
+    </style>
   </head>
   <body>
+    <div id="viz">
+      <svg style="width: 500px; height: 500px; border: 1px lightgray solid" />
+    </div>
+    <div id="controls"></div>
     <script src="d3.v6.min.js"></script>
+    <script src="js/colorbrewer.js"></script>
+    <script src="js/soccer.js"></script>
     <script>
       // v6 참조
       // https://github.com/sgratzl/d3tutorial/blob/main/README.md
       // https://observablehq.com/@d3/d3v6-migration-guide
-      d3.csv('data/cities.csv')
-        .then(data => {
-          console.log(
-            'domain: ',
-            d3.extent(data, el => +el.population),
-          );
-        })
-        .catch(console.error);
-
-      d3.json('data/tweets.json')
-        .then(data => {
-          const nestedTweets = d3.group(data.tweets, el => el.user);
-          console.log(nestedTweets);
-        })
-        .catch(console.error);
-
-      const newRamp = d3
-        .scaleLinear()
-        .domain([500000, 13000000])
-        .range(['dodgerblue', 'crimson']);
-      console.log(d3.color(newRamp(1000000)).formatHex());
-      console.log(d3.color(newRamp(9000000)).formatHex());
-      // console.log(newRamp.invert(313));
-
-      const sample = [423, 124, 66, 424, 58, 10, 900, 44, 1];
-      const qScale = d3.scaleQuantile().domain(sample).range([0, 1, 2]);
-      console.log(qScale(423));
-      console.log(qScale(10));
-      console.log(qScale(66));
-      console.log(qScale(100000));
+      createSoccerViz();
     </script>
   </body>
 </html>
